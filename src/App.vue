@@ -1,61 +1,77 @@
 <template>
   <v-app>
+
     <v-app-bar
+      ref="appToolbar"
       app
-      color="primary"
-      dark
+      clipped-left
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <!-- TODO: Figure out what we want to name this -->
+      <v-toolbar-title>CivclassicsWebUI</v-toolbar-title>
     </v-app-bar>
 
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      clipped
+      fixed
+    >
+      <v-list class="pt-0" :expand="$vuetify.breakpoint.mdAndUp">
+        <v-list-group
+          no-action
+          v-for="(group, index) in routing"
+          :key="index"
+          :prepend-icon="group.icon"
+          :value="isExpanded(group)"
+        >
+          <template #activator>
+            <v-list-item-title>{{ group.caption }}</v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-ripple
+            v-for="(page, pageIndex) in group.pages"
+            :key="`${index}-${pageIndex}`"
+            :to="page.path"
+            @click.prevent=""
+          >
+            <v-list-item-icon><v-icon>{{ page.icon }}</v-icon></v-list-item-icon>
+            <v-list-item-title>{{ page.caption }}</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-content>
-      <HelloWorld/>
+      <v-container fluid class="pt-0">
+        <keep-alive>
+          <router-view/>
+        </keep-alive>
+      </v-container>
     </v-content>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import Component from 'vue-class-component';
+import { RouteGroup, Routing } from '@/router';
 
-export default Vue.extend({
-  name: 'App',
+@Component
+export default class App extends Vue {
+  routing = Routing
 
-  components: {
-    HelloWorld,
-  },
+  drawer = this.$vuetify.breakpoint.lgAndUp
 
-  data: () => ({
-    //
-  }),
-});
+  isExpanded(group: RouteGroup) {
+    if (this.$vuetify.breakpoint.xsOnly) {
+      const route = this.$route;
+      return group.pages.some((page) => page.path === route.path);
+    }
+    return true;
+  }
+}
+
 </script>
