@@ -8,8 +8,7 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
 
-      <!-- TODO: Figure out what we want to name this -->
-      <v-toolbar-title>CivclassicsWebUI</v-toolbar-title>
+      <v-toolbar-title>KiraDashboard</v-toolbar-title>
     </v-app-bar>
 
     <v-navigation-drawer

@@ -1,4 +1,4 @@
-# civclassicswebui
+# KiraDashboard
 
 ## Project setup
 ```
