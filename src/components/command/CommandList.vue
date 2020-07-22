@@ -5,6 +5,7 @@
     must-sort
     :mobile-breakpoint="0"
     :headers="headers"
+    :items="dataa"
   >
 
     <template #header.btn>
@@ -22,12 +23,28 @@
         </v-list>
       </v-menu>
     </template>
+
+    <template #item="{ item }">
+      <tr>
+        <td>
+          {{item.date}}
+        </td>
+        <td>
+          {{item}}
+        </td>
+      </tr>
+
+    </template>
   </v-data-table>
 </template>
 
 <script>
 import Vue from 'vue';
 import Component from 'vue-class-component';
+//
+// export default {
+//
+// }
 
 @Component
 export default class CommandList extends Vue {
@@ -50,5 +67,11 @@ export default class CommandList extends Vue {
       width: '1%',
     },
   ];
+
+  get dataa() {
+    // console.log(this.$store.getters.data);
+    console.log(this.$store.getters.data.map((d) => d.type));
+    return this.$store.getters.data;
+  }
 }
 </script>

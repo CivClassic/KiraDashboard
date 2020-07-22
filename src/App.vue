@@ -64,6 +64,11 @@ export default class App extends Vue {
 
   drawer = this.$vuetify.breakpoint.lgAndUp
 
+  created() {
+    // TODO Accept token
+    this.$wsConnect('<TOKEN>');
+  }
+
   isExpanded(group: RouteGroup) {
     if (this.$vuetify.breakpoint.xsOnly) {
       const route = this.$route;
