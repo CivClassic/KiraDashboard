@@ -4,6 +4,7 @@ import Error from '@/views/error';
 import General from '@/views/general';
 import Groups from '@/views/groups';
 import Settings from '@/views/settings';
+import Snitches from '@/views/snitches';
 
 Vue.use(VueRouter);
 
@@ -33,13 +34,6 @@ export const Routing: RouteGroup[] = [
         path: '/',
         component: General.Dashboard,
       },
-      // Console
-      {
-        icon: 'mdi-code-tags',
-        caption: 'Console',
-        path: '/console',
-        component: General.Console,
-      },
     ],
   },
   // Groups
@@ -53,6 +47,20 @@ export const Routing: RouteGroup[] = [
         caption: 'My Groups',
         path: '/groups/me',
         component: Groups.MyGroups,
+      },
+    ],
+  },
+  // Snitches
+  {
+    icon: 'mdi-bell',
+    caption: 'Snitches',
+    pages: [
+      // Live Snitches
+      {
+        icon: 'mdi-bell-alert',
+        caption: 'Live Snitches',
+        path: '/snitches/live',
+        component: Snitches.Live,
       },
     ],
   },

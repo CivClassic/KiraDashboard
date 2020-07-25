@@ -43,13 +43,34 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-content>
+    <v-main>
       <v-container fluid class="pt-0">
         <keep-alive>
           <router-view/>
         </keep-alive>
       </v-container>
-    </v-content>
+    </v-main>
+
+    <v-dialog v-model="isDisconnected" persistent max-width="600px">
+      <v-card :loading="isConnecting">
+        <v-card-title>
+          <span class="headline">Kira Authentication</span>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="tokenField"
+            label="API Token"
+            type="password"
+            hint="Token can be retrieved by messaging Kira 'apitoken'"
+            required
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn color="primary" text @click="connect()">Login</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -57,6 +78,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { RouteGroup, Routing } from '@/router';
+import { getModule } from 'vuex-module-decorators';
+import Websocket, { WebsocketStatus } from '@/store/modules/websocket';
 
 @Component
 export default class App extends Vue {
@@ -64,9 +87,29 @@ export default class App extends Vue {
 
   drawer = this.$vuetify.breakpoint.lgAndUp
 
-  created() {
-    // TODO Accept token
-    this.$wsConnect('<TOKEN>');
+  dialog = true
+
+  tokenField = ''
+
+  private websocketModule = getModule(Websocket, this.$store);
+
+  mounted() {
+    if (localStorage.kiraToken) {
+      this.tokenField = localStorage.kiraToken;
+      this.connect();
+    }
+  }
+
+  get isConnecting(): boolean {
+    return this.websocketModule.status === WebsocketStatus.CONNECTING;
+  }
+
+  get isDisconnected(): boolean {
+    return this.websocketModule.status !== WebsocketStatus.CONNECTED;
+  }
+
+  connect() {
+    this.websocketModule.connect(this.tokenField);
   }
 
   isExpanded(group: RouteGroup) {
