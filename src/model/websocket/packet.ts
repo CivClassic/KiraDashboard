@@ -1,4 +1,4 @@
-interface Packet {
+export interface Packet {
   type: string;
 
   /**
@@ -7,4 +7,6 @@ interface Packet {
   date: Date;
 }
 
-export default Packet;
+export interface SendablePacket {
+  type: string;
+}

@@ -24,7 +24,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { getModule } from 'vuex-module-decorators';
 import Snitches from '@/store/modules/snitches';
-import { SnitchAlertJson } from '@/model/websocket/types/data';
+import { SnitchAlertJson } from '@/model/websocket/data';
 
 @Component
 export default class SnitchList extends Vue {

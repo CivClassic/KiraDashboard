@@ -3,7 +3,6 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
-import { AuthPacket } from '@/model/websocket/types/token';
 import handleWebsocketMessage from '@/util/handleWebsocketMessage';
 
 const baseUrl = 'wss://mc.civclassic.com:14314?applicationId=kiradashboard&apiVersion=1&apiToken=';
@@ -54,9 +53,10 @@ export default class Websocket extends VuexModule {
       const data = JSON.parse(event.data);
       data.date = new Date(); // Add the current timestamp to each message
 
+      // The only thing we care about handling here is whether or not
+      // we should set the state to connected. Everything else can get handled externally
       if (data.type === 'auth') {
-        const packet = data as AuthPacket;
-        if (packet.valid) {
+        if (data.valid) {
           this.context.commit('SET_WEBSOCKET_STATUS', WebsocketStatus.CONNECTED);
           localStorage.kiraToken = token;
         }

@@ -3,7 +3,7 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
-import { SnitchAlertJson } from '@/model/websocket/types/data';
+import { SnitchAlertJson } from '@/model/websocket/data';
 
 @Module({
   name: 'snitches',

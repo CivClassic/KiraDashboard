@@ -1,6 +1,6 @@
-import Packet from '@/model/websocket/types/packet';
+import { Packet } from '@/model/websocket/packet';
 import { Store } from 'vuex';
-import { DataPacket } from '@/model/websocket/types/data';
+import { DataPacket } from '@/model/websocket/data';
 import { getModule } from 'vuex-module-decorators';
 import Snitches from '@/store/modules/snitches';
 
